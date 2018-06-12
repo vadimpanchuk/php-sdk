@@ -18,6 +18,20 @@ class MailfireWebPush extends MailfireDi
     }
 
     /**
+     * @param int $pushUserId
+     * @return bool
+     */
+    public function unsubscribeByPushUser($pushUserId)
+    {
+        if (!$pushUserId) {
+            return false;
+        }
+
+        $result = $this->request->create('webpush/unsubscribe/' . $pushUserId);
+        return !empty($result['result']) ? $result['result'] : false;
+    }
+
+    /**
      * @param int $projectId
      * @param string $hash
      * @return bool

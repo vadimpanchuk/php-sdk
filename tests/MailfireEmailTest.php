@@ -13,7 +13,7 @@ class MailfireEmailTest extends PHPUnit_Framework_TestCase
             ->getMock();
         $request->expects($this->once())
             ->method('create')
-            ->with(MailfireEmail::CHECK_EMAIL_RESOURCE, array('email' => $email))
+            ->with(MailfireEmail::CHECK_EMAIL_RESOURCE, array('email' => $email, 'sanitize' => true))
             ->will($this->returnValue($predefinedResult));
 
         $clientId = 123;
@@ -22,6 +22,7 @@ class MailfireEmailTest extends PHPUnit_Framework_TestCase
         $mf->errorHandler->setErrorMode(MailfireErrorHandler::MODE_EXCEPTION);
         $mf->request = $request;
         $result = $mf->email->check($email);
+//        var_dump($result);
         $this->assertEquals($predefinedResult, $result);
     }
 }

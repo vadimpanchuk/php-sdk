@@ -1,5 +1,21 @@
 <?php
 
+/**
+ * Class Mailfire
+ *
+ * @property MailfireErrorHandler errorHandler
+ * @property MailfireRequest request
+ * @property MailfirePush push
+ * @property MailfireEmail email
+ * @property MailfireUser user
+ * @property MailfireUnsub unsub
+ * @property MailfireUnsubTypes unsubTypes
+ * @property MailfireWebPush webpush
+ * @property MailfireGoal goal
+ * @property MailfireAppPush appPush
+ * @property MailfireContent content
+ * @property MailfireRfm rfm
+ */
 class Mailfire
 {
     public $clientId;
@@ -31,6 +47,7 @@ class Mailfire
         $this->goal = new MailfireGoal($this);
         $this->appPush = new MailfireAppPush($this);
         $this->content = new MailfireContent($this);
+        $this->rfm = new MailfireRfm($this);
     }
     
 }

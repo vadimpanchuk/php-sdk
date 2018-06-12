@@ -215,4 +215,17 @@ class MailfireUser extends MailfireDi
 
         return $this->request->create('lastpayment', $data);
     }
+
+    public function forceConfirmByEmailAndProject($email, $projectId)
+    {
+        $data = [
+            'last_reaction' => strtotime('now')
+        ];
+        $resource = strtr('users/project/:projectId/email/:emailHash/confirm',[
+            ':emailHash' => base64_encode($email),
+            ':projectId' => $projectId,
+        ]);
+
+        return $this->request->sendToApi2($resource, 'PUT', $data);
+    }
 }

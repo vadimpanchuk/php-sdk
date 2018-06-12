@@ -3,6 +3,7 @@
 /**
  * Class MailfireDi
  *
+ * @property MailfireRfm rfm
  * @property MailfirePush push
  * @property MailfireUser user
  * @property MailfireRequest request

@@ -286,6 +286,9 @@ $user = $mf->user->getByEmail('someone@example.com', 2);
 $mf->webpush->unsubscribeByUser($user);
 //subscribe back
 $mf->webpush->subscribeByUser($user);
+//unsubscribe by push user id
+$pushUserId = 123;
+$mf->webpush->unsubscribeByPushUser($pushUserId);
 ```
 
 ## Create and update user data
@@ -584,6 +587,11 @@ $result = $mf->content->trackShow($project, $uid, $entityId = null);
 // $result is a boolean status
 ```
 
+# Force confirm update
+```php
+$result = $mf->user->forceConfirmByEmailAndProject($email, $projectId);
+// $result == 'Accepted'; if successful
+```
 
 ## Get response (if $result === false)
 ```php
@@ -608,6 +616,22 @@ If you want the component throws exceptions just change handler mode:
 ```php
 $mf = new Mailfire($clientId, $clientHash);
 $mf->errorHandler->setErrorMode(MailfireErrorHandler::MODE_EXCEPTION);
+```
+
+## Set curl options for single request
+```php
+$mf = new Mailfire($clientId, $clientHash);
+$mf->request->setOption(CURLOPT_TIMEOUT, 2);
+```
+
+## Set curl options for multiple requests (permanent)
+```php
+$mf->request->setOption(CURLOPT_TIMEOUT_MS, 2000, true);
+```
+
+## Reset permanent curl options
+```php
+$mf->request->resetPermanentOptions();
 ```
 
 # HOW TO RUN THE TESTS

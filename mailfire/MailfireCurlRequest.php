@@ -3,19 +3,25 @@
 class MailfireCurlRequest
 {
     private $handle = null;
+    protected $permanentOptions = [];
 
     public function __construct($url = '')
     {
         $this->handle = curl_init($url);
     }
 
-    public function setOption($name, $value)
+    public function setOption($name, $value, $permanentOption = false)
     {
-        curl_setopt($this->handle, $name, $value);
+        if ($permanentOption){
+            $this->permanentOptions[$name] = $value;
+        } else {
+            curl_setopt($this->handle, $name, $value);
+        }
     }
 
     public function execute()
     {
+        $this->setPermanentOptions();
         return curl_exec($this->handle);
     }
 
@@ -32,6 +38,18 @@ class MailfireCurlRequest
     public function reset()
     {
         curl_reset($this->handle);
+    }
+
+    public function resetPermanentOptions()
+    {
+        $this->permanentOptions = [];
+    }
+
+    protected function setPermanentOptions()
+    {
+        foreach ($this->permanentOptions as $name => $value){
+            $this->setOption($name, $value);
+        }
     }
 
 }

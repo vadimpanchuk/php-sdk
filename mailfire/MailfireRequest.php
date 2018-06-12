@@ -1,10 +1,14 @@
 <?php
 
+/**
+ * Class MailfireRequest
+ * @property MailfireCurlRequest curlRequest
+ */
+
 class MailfireRequest extends MailfireDi
 {
     const API_BASE = 'https://api.mailfire.io/v1/';
     const API2_BASE = 'https://api2.mailfire.io/';
-
     private $curlRequest = null;
     private $lastCurlResult = null;
 
@@ -93,7 +97,6 @@ class MailfireRequest extends MailfireDi
             return false;
         }
         $headers[] = 'Authorization: Sign ' . $sign;
-
         $result = $this->sendCurl($uri, $method, $data, $headers);
         $this->lastCurlResult = $result;
         if ($result['code'] != 200) {
@@ -238,4 +241,20 @@ class MailfireRequest extends MailfireDi
 
         return $headers;
     }
+
+    public function setOption($name, $value, $permanentOption = false)
+    {
+        $this->curlRequest->setOption($name, $value, $permanentOption);
+    }
+
+    public function resetOptions()
+    {
+        $this->curlRequest->reset();
+    }
+
+    public function resetPermanentOptions()
+    {
+        $this->curlRequest->resetPermanentOptions();
+    }
+
 }
