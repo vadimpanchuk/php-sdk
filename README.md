@@ -233,6 +233,24 @@ array(1) {
 
 ```
 
+## Get unsubscribed list
+
+```php
+<?php
+
+$result = $mf->unsub->getByDate('2018-06-10');
+
+//Response example
+return [
+    'email' => "jo23lu56@gmail.com",
+    'project_id' => 9,
+    'client_user_id' => NULL,
+    'source_id' => 9,
+    'created_at' => "2018-02-27 20:31:45"
+];
+
+```
+
 ## Send push notification
 ```php
 //select user

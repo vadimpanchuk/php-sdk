@@ -85,4 +85,8 @@ class MailfireUnsub extends MailfireDi
         return $this->request->receive('unsub/unsubreason/'.$user['id']);
     }
 
+    public function getByDate($date)
+    {
+        return $this->request->receive("unsub/list/" . strtotime($date));
+    }
 }
