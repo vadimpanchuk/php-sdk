@@ -559,14 +559,16 @@ $result = $mf->appPush->refreshToken($project, $token, $uid);
 Track show
 
 ```php
-$result = $mf->appPush->trackShow($project, $uid, $pushId);
+$created - show time in timestamp format
+$result = $mf->appPush->trackShow($project, $uid, $pushId, $created);
 // $result is a boolean status
 ```
 
 Track click
 
 ```php
-$result = $mf->appPush->trackClick($project, $uid, $pushId);
+$created - click time in timestamp format
+$result = $mf->appPush->trackClick($project, $uid, $pushId, $created);
 // $result is a boolean status
 ```
 
