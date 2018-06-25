@@ -25,7 +25,7 @@ class MailfireAppPush extends MailfireDi
         }
 
         return $this->request->sendToApi2('pushapp/user/create', 'POST', [
-            'project' => $project, 'token' => $token, 'uid' => $uid, 'user_id' => $userId
+            'project' => $project, 'token' => $token, 'uid' => $uid, 'user_id' => $userId,
         ]);
     }
 
@@ -51,11 +51,11 @@ class MailfireAppPush extends MailfireDi
         }
 
         return $this->request->sendToApi2('pushapp/user/token/refresh', 'PUT', [
-            'project' => $project, 'token' => $token, 'uid' => $uid
+            'project' => $project, 'token' => $token, 'uid' => $uid,
         ]);
     }
 
-    public function trackShow($project, $uid, $pushId)
+    public function trackShow($project, $uid, $pushId, $created = null)
     {
         if (!$project) {
             $this->errorHandler->handle(new Exception('Project must be set.'));
@@ -69,13 +69,15 @@ class MailfireAppPush extends MailfireDi
             $this->errorHandler->handle(new Exception('Push id must be set.'));
             return false;
         }
+
+        $created = $created ?: time();
 
         return $this->request->sendToApi2('pushapp/track/show/' . $pushId, 'POST', [
-            'project' => $project, 'uid' => $uid, 'push_id' => $pushId
+            'project' => $project, 'uid' => $uid, 'push_id' => $pushId, 'created' => $created,
         ]);
     }
 
-    public function trackClick($project, $uid, $pushId)
+    public function trackClick($project, $uid, $pushId, $created = null)
     {
         if (!$project) {
             $this->errorHandler->handle(new Exception('Project must be set.'));
@@ -90,8 +92,10 @@ class MailfireAppPush extends MailfireDi
             return false;
         }
 
+        $created = $created ?: time();
+
         return $this->request->sendToApi2('pushapp/track/click/' . $pushId, 'POST', [
-            'project' => $project, 'uid' => $uid, 'push_id' => $pushId
+            'project' => $project, 'uid' => $uid, 'push_id' => $pushId, 'created' => $created,
         ]);
     }
 
@@ -107,7 +111,7 @@ class MailfireAppPush extends MailfireDi
         }
 
         return $this->request->sendToApi2('pushapp/user/online', 'PUT', [
-            'project' => $project, 'uid' => $uid
+            'project' => $project, 'uid' => $uid,
         ]);
     }
 }
