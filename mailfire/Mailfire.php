@@ -3,18 +3,18 @@
 /**
  * Class Mailfire
  *
- * @property MailfireErrorHandler errorHandler
- * @property MailfireRequest request
- * @property MailfirePush push
- * @property MailfireEmail email
- * @property MailfireUser user
- * @property MailfireUnsub unsub
- * @property MailfireUnsubTypes unsubTypes
- * @property MailfireWebPush webpush
- * @property MailfireGoal goal
- * @property MailfireAppPush appPush
- * @property MailfireContent content
- * @property MailfireRfm rfm
+ * @property MailfireErrorHandler $errorHandler
+ * @property MailfireRequest $request
+ * @property MailfirePush $push
+ * @property MailfireEmail $email
+ * @property MailfireUser $user
+ * @property MailfireUnsub $unsub
+ * @property MailfireUnsubTypes $unsubTypes
+ * @property MailfireWebPush $webpush
+ * @property MailfireGoal $goal
+ * @property MailfireAppPush $appPush
+ * @property MailfireContent $content
+ * @property MailfireRfm $rfm
  */
 class Mailfire
 {
