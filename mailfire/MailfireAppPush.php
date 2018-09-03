@@ -114,4 +114,20 @@ class MailfireAppPush extends MailfireDi
             'project' => $project, 'uid' => $uid,
         ]);
     }
+
+    public function send($project, $uid, $title, $body, $icon, $url)
+    {
+        if (!$project) {
+            $this->errorHandler->handle(new Exception('Project must be set.'));
+            return false;
+        }
+        if (!$uid) {
+            $this->errorHandler->handle(new Exception('Uid must be set.'));
+            return false;
+        }
+
+        return $this->request->sendToApi2('pushapp/user/send', 'POST', [
+            'project' => $project, 'uid' => $uid, 'title' => $title, 'body' => $body, 'icon' => $icon, 'url' => $url
+        ]);
+    }
 }
