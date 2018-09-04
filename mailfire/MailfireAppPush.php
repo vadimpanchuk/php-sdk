@@ -115,7 +115,7 @@ class MailfireAppPush extends MailfireDi
         ]);
     }
 
-    public function send($project, $uid, $title, $body, $icon, $url)
+    public function send($project, $uid, $message)
     {
         if (!$project) {
             $this->errorHandler->handle(new Exception('Project must be set.'));
