@@ -542,6 +542,16 @@ $token - application token from Firebase server
 
 $uid - unique identifier of users device
 
+Send data notification 
+
+```php
+$message = ['title' => 'Hello'];
+
+$message = jsone_encode($message);
+
+$result = $mf->appPush->send($project, $uid, $message);
+```
+
 Create user
 
 ```php
