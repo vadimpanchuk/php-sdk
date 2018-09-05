@@ -92,11 +92,9 @@ class MailfireRequest extends MailfireDi
         $uri = self::API_BASE . $resource;
 
         $headers = array();
-        $sign = $this->getSign($uri, $method, $data);
-        if (false === $sign) {
-            return false;
-        }
-        $headers[] = 'Authorization: Sign ' . $sign;
+
+        $headers[] = 'Authorization: Basic ' . base64_encode($this->clientId . ':' . sha1($this->clientKey));
+
         $result = $this->sendCurl($uri, $method, $data, $headers);
         $this->lastCurlResult = $result;
         if ($result['code'] != 200) {
@@ -147,56 +145,6 @@ class MailfireRequest extends MailfireDi
             'result' => $result,
             'code' => $code
         );
-    }
-
-    /**
-     * @param $uri
-     * @param $method
-     * @param $data
-     * @return string
-     */
-    private function getSign($uri, $method, $data)
-    {
-        $data['request_method'] = $method;
-        $data['request_uri'] = $uri;
-        ksort($data);
-
-        if (PHP_VERSION_ID >= 50400) {
-            $unescaped = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        } else {
-            //There is no JSON_UNESCAPED_SLASHES and JSON_UNESCAPED_UNICODE in php5.3
-            $unescaped = $this->jsonEncodeUnescapedUnicode($data);
-            //simulate JSON_UNESCAPED_SLASHES
-            $unescaped = str_replace('\\/', '/', $unescaped);
-        }
-
-        $sign = hash_hmac('sha256', $unescaped, $this->clientKey);
-
-        $signData = json_encode(array('client_id' => $this->clientId, 'sign' => $sign));
-        return base64_encode($signData);
-    }
-
-    /**
-     * Emulate JSON_UNESCAPED_UNICODE
-     * @param $arr
-     * @return bool|string
-     * @throws Exception
-     */
-    private function jsonEncodeUnescapedUnicode($arr)
-    {
-        if (!function_exists('mb_encode_numericentity')) {
-            $exception = new Exception('Ext mbstring is required');
-            $this->errorHandler->handle($exception);
-            return false;
-        }
-        //convmap since 0x80 char codes so it takes all multibyte codes (above ASCII 127). So such characters are being "hidden" from normal json_encoding
-        array_walk_recursive($arr, function (&$item, $key) {
-            if (is_string($item)) {
-                $item = mb_encode_numericentity($item, array(0x80, 0xffff, 0, 0xffff), 'UTF-8');
-            }
-        });
-        return mb_decode_numericentity(json_encode($arr), array(0x80, 0xffff, 0, 0xffff), 'UTF-8');
-
     }
 
     public function sendToApi2($resource, $method, $data = array())
