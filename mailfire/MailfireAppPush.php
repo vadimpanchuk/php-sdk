@@ -9,7 +9,7 @@ class MailfireAppPush extends MailfireDi
      * @param null $userId
      * @return bool
      */
-    public function createPushUser($project, $token, $uid, $userId = null)
+    public function createPushUser($project, $token, $uid, $platform, $userId = null)
     {
         if (!$project) {
             $this->errorHandler->handle(new Exception('Project must be set.'));
@@ -24,8 +24,13 @@ class MailfireAppPush extends MailfireDi
             return false;
         }
 
+        if (!$platform) {
+            $this->errorHandler->handle(new Exception('Platform must be set.'));
+            return false;
+        }
+
         return $this->request->sendToApi2('pushapp/user/create', 'POST', [
-            'project' => $project, 'token' => $token, 'uid' => $uid, 'user_id' => $userId,
+            'project' => $project, 'token' => $token, 'uid' => $uid, 'user_id' => $userId, 'platform' => $platform
         ]);
     }
 

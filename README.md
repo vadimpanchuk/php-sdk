@@ -555,9 +555,11 @@ $result = $mf->appPush->send($project, $uid, $message);
 Create user
 
 ```php
-$result = $mf->appPush->createPushUser($project, $token, $uid, $userId = null);
+$result = $mf->appPush->createPushUser($project, $token, $uid, $platform, $userId = null);
 // $result is id of created user
 ```
+
+`platform` - user platform, Android - 1, IOS - 2
 
 Refresh token
 
