@@ -332,7 +332,7 @@ $result = $mf->user->setUserFieldsByUser($user, $fields);
 // $result is a boolean status
 ```
 
-## Create and update payment data
+## Payments
 ```php
 $startDate = 1509617696;
 $expireDate = 1609617696; //optional
