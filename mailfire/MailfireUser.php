@@ -74,7 +74,7 @@ class MailfireUser extends MailfireDi
 
     /**
      * Set custom user fields by user
-     * 
+     *
      * @param array $user
      * @param array $data ['fieldName' => 'fieldValue']
      * @return bool
@@ -85,7 +85,7 @@ class MailfireUser extends MailfireDi
         if (!$user || !$user['id']) {
             return false;
         }
-        
+
         $resource = strtr('userfields/user/:userId', [
             ':userId' => $user['id'],
         ]);
@@ -94,7 +94,7 @@ class MailfireUser extends MailfireDi
 
     /**
      * Get custom user fields by user email and project ID
-     * 
+     *
      * @param string $email
      * @param int $projectId
      * @return bool
@@ -110,7 +110,7 @@ class MailfireUser extends MailfireDi
 
     /**
      * Get custom user fields by user
-     * 
+     *
      * @param array $user
      * @return bool
      */
@@ -120,7 +120,7 @@ class MailfireUser extends MailfireDi
         if (!$user || !$user['id']) {
             return false;
         }
-        
+
         $resource = strtr('userfields/user/:userId', [
             ':userId' => $user['id']
         ]);
@@ -132,7 +132,7 @@ class MailfireUser extends MailfireDi
         $data = [
             'timestamp' => $dateTime->format('U')
         ];
-        $resource = strtr('users/project/:projectId/email/:emailHash/online',[
+        $resource = strtr('users/project/:projectId/email/:emailHash/online', [
             ':emailHash' => base64_encode($email),
             ':projectId' => $projectId,
         ]);
@@ -162,10 +162,11 @@ class MailfireUser extends MailfireDi
      * @param $projectId
      * @param $startDate
      * @param bool $expireDate
-     * @param bool $totalCount
+     * @param bool|int $totalCount
+     * @param bool|int $paymentType
      * @return bool
      */
-    public function addPaymentByEmailAndProjectId($email, $projectId, $startDate, $expireDate = false, $totalCount = false)
+    public function addPaymentByEmailAndProjectId($email, $projectId, $startDate, $expireDate = false, $totalCount = false, $paymentType = false)
     {
         $user = $this->getByEmail($email, $projectId);
         if (!$user || !$user['id']) {
@@ -183,6 +184,10 @@ class MailfireUser extends MailfireDi
             $data['total_count'] = $totalCount;
         }
 
+        if ($paymentType) {
+            $data['payment_type'] = $paymentType;
+        }
+
         return $this->request->create('lastpayment', $data);
     }
 
@@ -193,9 +198,10 @@ class MailfireUser extends MailfireDi
      * @param $startDate
      * @param bool $expireDate
      * @param bool $totalCount
+     * @param bool $paymentType
      * @return bool
      */
-    public function addPaymentByUser(array $user, $startDate, $expireDate = false, $totalCount = false)
+    public function addPaymentByUser(array $user, $startDate, $expireDate = false, $totalCount = false, $paymentType = false)
     {
         $user = $this->resolve($user);
         if (!$user || !$user['id']) {
@@ -213,6 +219,10 @@ class MailfireUser extends MailfireDi
             $data['total_count'] = $totalCount;
         }
 
+        if ($paymentType) {
+            $data['payment_type'] = $paymentType;
+        }
+
         return $this->request->create('lastpayment', $data);
     }
 
@@ -221,7 +231,7 @@ class MailfireUser extends MailfireDi
         $data = [
             'last_reaction' => strtotime('now')
         ];
-        $resource = strtr('users/project/:projectId/email/:emailHash/confirm',[
+        $resource = strtr('users/project/:projectId/email/:emailHash/confirm', [
             ':emailHash' => base64_encode($email),
             ':projectId' => $projectId,
         ]);

@@ -337,11 +337,12 @@ $result = $mf->user->setUserFieldsByUser($user, $fields);
 $startDate = 1509617696;
 $expireDate = 1609617696; //optional
 $paymentCount = 14; //optional
+$paymentType = 1 // optional
 ```
 By email and project ID
 
 ```php
-$result = $mf->user->addPaymentByEmailAndProjectId('ercling@yandex.ru', 2, $startDate, $expireDate, $paymentCount);
+$result = $mf->user->addPaymentByEmailAndProjectId('ercling@yandex.ru', 2, $startDate, $expireDate, $paymentCount, $paymentType);
 // $result is a boolean status
 ```
 
@@ -349,7 +350,7 @@ By user
 
 ```php
 $user = $mf->user->getById(892396028);
-$result = $mf->user->addPaymentByUser($user, $startDate, $expireDate, $paymentCount);
+$result = $mf->user->addPaymentByUser($user, $startDate, $expireDate, $paymentCount, $paymentType);
 // $result is a boolean status
 ```
 
