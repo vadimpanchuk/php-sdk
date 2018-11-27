@@ -7,8 +7,12 @@
 
 class MailfireRequest extends MailfireDi
 {
-    const API_BASE = 'https://api.mailfire.io/v1/';
-    const API2_BASE = 'https://api2.mailfire.io/';
+    const API_BASE = 'https://$clientId.api.mailfire.io/v1/';
+    const API2_BASE = 'https://$clientId.api2.mailfire.io/';
+
+    protected $apiBase;
+    protected $api2Base;
+
     private $curlRequest = null;
     private $lastCurlResult = null;
 
@@ -20,6 +24,8 @@ class MailfireRequest extends MailfireDi
     {
         parent::__construct($di);
         $this->setCurlRequest(new MailfireCurlRequest());
+        $this->setApiBase($this->clientId);
+        $this->setApi2Base($this->clientId);
     }
 
     /**
@@ -203,6 +209,16 @@ class MailfireRequest extends MailfireDi
     public function resetPermanentOptions()
     {
         $this->curlRequest->resetPermanentOptions();
+    }
+
+    protected function setApiBase($clientId)
+    {
+        $this->apiBase = str_replace('$clientId', $clientId, self::API_BASE);
+    }
+
+    protected function setApi2Base($clientId)
+    {
+        $this->api2Base = str_replace('$clientId', $clientId, self::API2_BASE);
     }
 
 }
