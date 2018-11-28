@@ -95,7 +95,7 @@ class MailfireRequest extends MailfireDi
     private function send($resource, $method, $data = array())
     {
         $method = strtoupper($method);
-        $uri = self::API_BASE . $resource;
+        $uri = $this->apiBase . $resource;
 
         $headers = array();
 
@@ -155,7 +155,7 @@ class MailfireRequest extends MailfireDi
 
     public function sendToApi2($resource, $method, $data = array())
     {
-        $uri = self::API2_BASE . $resource;
+        $uri = $this->api2Base . $resource;
 
         $headers = $this->getApi2Headers();
 
