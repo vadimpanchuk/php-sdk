@@ -7,11 +7,8 @@
 
 class MailfireRequest extends MailfireDi
 {
-    const API_BASE = 'https://$clientId.api.mailfire.io/v1/';
-    const API2_BASE = 'https://$clientId.api2.mailfire.io/';
-
-    protected $apiBase;
-    protected $api2Base;
+    const API_BASE = 'https://api.mailfire.io/v1/';
+    const API2_BASE = 'https://api2.mailfire.io/';
 
     private $curlRequest = null;
     private $lastCurlResult = null;
@@ -24,8 +21,6 @@ class MailfireRequest extends MailfireDi
     {
         parent::__construct($di);
         $this->setCurlRequest(new MailfireCurlRequest());
-        $this->setApiBase($this->clientId);
-        $this->setApi2Base($this->clientId);
     }
 
     /**
@@ -95,7 +90,7 @@ class MailfireRequest extends MailfireDi
     private function send($resource, $method, $data = array())
     {
         $method = strtoupper($method);
-        $uri = $this->apiBase . $resource;
+        $uri = self::API_BASE . $resource;
 
         $headers = array();
 
@@ -155,7 +150,7 @@ class MailfireRequest extends MailfireDi
 
     public function sendToApi2($resource, $method, $data = array())
     {
-        $uri = $this->api2Base . $resource;
+        $uri = self::API2_BASE . $resource;
 
         $headers = $this->getApi2Headers();
 
