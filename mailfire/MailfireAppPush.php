@@ -3,13 +3,15 @@
 class MailfireAppPush extends MailfireDi
 {
     /**
-     * @param $project
-     * @param $token
-     * @param $uid
-     * @param null $userId
+     * @param int $project Project id can be found at https://admin.mailfire.io/account/projects
+     * @param string $token FCM token
+     * @param int $platform Android or IOS
+     * @param null $uid Your userID
+     * @param null $mfEmailUserId
      * @return bool
+     * @throws Exception
      */
-    public function createPushUser($project, $token, $uid, $platform, $userId = null)
+    public function createPushUser($project, $token, $platform, $uid = null, $mfEmailUserId = null)
     {
         if (!$project) {
             $this->errorHandler->handle(new Exception('Project must be set.'));
@@ -19,10 +21,6 @@ class MailfireAppPush extends MailfireDi
             $this->errorHandler->handle(new Exception('Token must be set.'));
             return false;
         }
-        if (!$uid) {
-            $this->errorHandler->handle(new Exception('Uid must be set.'));
-            return false;
-        }
 
         if (!$platform) {
             $this->errorHandler->handle(new Exception('Platform must be set.'));
@@ -30,7 +28,7 @@ class MailfireAppPush extends MailfireDi
         }
 
         return $this->request->sendToApi2('pushapp/user/create', 'POST', [
-            'project' => $project, 'token' => $token, 'uid' => $uid, 'user_id' => $userId, 'platform' => $platform
+            'project' => $project, 'token' => $token, 'uid' => $uid, 'user_id' => $mfEmailUserId, 'platform' => $platform
         ]);
     }
 
