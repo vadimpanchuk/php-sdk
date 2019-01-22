@@ -164,9 +164,10 @@ class MailfireUser extends MailfireDi
      * @param bool $expireDate
      * @param bool|int $totalCount
      * @param bool|int $paymentType
+     * @param bool|int $amount
      * @return bool
      */
-    public function addPaymentByEmailAndProjectId($email, $projectId, $startDate, $expireDate = false, $totalCount = false, $paymentType = false)
+    public function addPaymentByEmailAndProjectId($email, $projectId, $startDate, $expireDate = false, $totalCount = false, $paymentType = false, $amount = false)
     {
         $user = $this->getByEmail($email, $projectId);
         if (!$user || !$user['id']) {
@@ -188,6 +189,10 @@ class MailfireUser extends MailfireDi
             $data['payment_type'] = $paymentType;
         }
 
+        if ($amount) {
+            $data['amount'] = $amount;
+        }
+
         return $this->request->create('lastpayment', $data);
     }
 
@@ -199,9 +204,10 @@ class MailfireUser extends MailfireDi
      * @param bool $expireDate
      * @param bool $totalCount
      * @param bool $paymentType
+     * @param bool|int $amount
      * @return bool
      */
-    public function addPaymentByUser(array $user, $startDate, $expireDate = false, $totalCount = false, $paymentType = false)
+    public function addPaymentByUser(array $user, $startDate, $expireDate = false, $totalCount = false, $paymentType = false, $amount = false)
     {
         $user = $this->resolve($user);
         if (!$user || !$user['id']) {
@@ -221,6 +227,10 @@ class MailfireUser extends MailfireDi
 
         if ($paymentType) {
             $data['payment_type'] = $paymentType;
+        }
+
+        if ($amount) {
+            $data['amount'] = $amount;
         }
 
         return $this->request->create('lastpayment', $data);
