@@ -11,24 +11,25 @@ Or make HTTP requests via cURL/any
 
 ## Signing of requests via auth
 ```php
-# php sdk
+# PHP SDK
 $clientId = 123;
 $clientToken = 'a1s2d3f4g5h6j7k8l';
 $mf = new Mailfire($clientId, $clientToken);
 ```
 ```php
-# php curl
+# PHP cURL
 curl_setopt($ch, CURLOPT_USERPWD, '123:' . sha1('a1s2d3f4g5h6j7k8l'));
 ```
 
 ```shell
-# shell
-# sha1 of a1s2d3f4g5h6j7k8l is 957081746b54977d51bef9fc74f4d4fd023bab13
-curl --user 123:a1s2d3f4g5h6j7k8l
+# console cURL
+curl -u 123:957081746b54977d51bef9fc74f4d4fd023bab13
+
+# 957081746b54977d51bef9fc74f4d4fd023bab13 is sha1 of clientToken (a1s2d3f4g5h6j7k8l)
 ```
 
 
-## Sending email
+## Sending email via PHP SDK
 ```php
 // Required params for letter
 $typeId = 1; // letter id (aka type_id)
@@ -69,6 +70,40 @@ $response = $mf->push->send($typeId, $categoryId, $projectId, $email, $user, $da
 var_dump($response);
 // 
 ```
+
+## Sending email via cURL
+```shell
+curl -X POST https://api.mailfire.io/v1/push/system \
+    -u 123:957081746b54977d51bef9fc74f4d4fd023bab13 \
+    -d 'JSON_DATA'
+
+# or https://api.mailfire.io/v1/push/trigger for trigger letters
+```
+
+```json
+JSON_DATA
+{
+    "type_id": 1,
+    "category": 1,
+    "client_id": 123,
+    "project_id": 1,
+    "data": {
+        "user": {
+            "email": "test@example.com",
+            "name": "John",
+            "age": 22,
+        },
+        "some": "hi",
+        "letter": "John",
+        "variables": "!",
+    },
+    "meta": {
+        "tracking_id": 72348234,
+    }
+}
+```
+
+
 # Other API methods
 ## Check email
 ```php
