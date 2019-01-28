@@ -70,6 +70,8 @@ $response = $mf->push->send($typeId, $categoryId, $projectId, $email, $user, $da
 var_dump($response);
 // 
 ```
+https://github.com/mailfire/php-sdk/blob/master/mailfire/MailfirePush.php
+
 
 ## Sending email via cURL
 ```shell
@@ -78,6 +80,7 @@ curl -X POST https://api.mailfire.io/v1/push/system \
     -d 'JSON_DATA'
 
 # or https://api.mailfire.io/v1/push/trigger for trigger letters
+# 957081746b54977d51bef9fc74f4d4fd023bab13 is sha1 of clientToken (a1s2d3f4g5h6j7k8l)
 ```
 
 ```json
@@ -107,7 +110,6 @@ JSON_DATA
 # Other API methods
 ## Check email
 ```php
-// Make POST /email/check with json {"email":"Test@Example.com"}
 $result = $mf->email->check('Test@Example.com');
 /* Returned array(
   'orig' => 'Test@Example.com',
@@ -119,51 +121,20 @@ $result = $mf->email->check('Test@Example.com');
   'trusted' => false,
 ) */
 ```
-
-## Validate email
-```php
-
-$projectId = 1;
-$email = 'test@example.com';
-$typeId = 1;
-
-$result = $mf->email->validate($projectId, $email, $typeId);
-/* Returned array(
-  'code' => ...,
-  'text' => ...,
-) */
-
-CODES:
-
-EMAIL_VALIDATION_STATUS_PASSED = 1;
-EMAIL_VALIDATION_STATUS_INVALID = 2;
-EMAIL_VALIDATION_STATUS_SERVER_ERROR = 3;
-
+```shell
+curl -X POST https://api.mailfire.io/v1/email/check \
+    -u 123:957081746b54977d51bef9fc74f4d4fd023bab13 \
+    -d '{"email":"Test@Example.com"}'
 ```
 
-## User info
+# Online
 ```php
-$projectId = 1;
-// Make GET to /user/project/PROJECT_ID/email/Test@Example.com
-$user = $mf->user->getByEmail('Test@Example.com', $projectId);
-/* Returned array(
-    "id":8424,
-    "project_id":1,
-    "email":"test@example.com",
-    "name":"John",
-    "gender":"m",
-    "country":"UKR",
-    "language":"en",
-    "last_online":"2016-06-17 12:59:19",
-    "last_reaction":"2016-06-17 12:59:19",
-    "last_mailed":"2016-06-22 12:06:45",
-    "last_request":"2016-06-03 04:01:19",
-    "activation":"2016-01-30 11:28:24",
-    ...
-) */
+$result = $mf->user->setOnlineByUser($user, new \DateTime());
+// or
+$result = $mf->user->setOnlineByEmailAndProjectId('ercling@gmail.com', 1, new \DateTime());
 ```
 
-## Unsubscribe
+# Unsubscribe
 ```php
 $projectId = 1;
 $user = $mf->user->getByEmail('test@example.com', $projectId);
@@ -269,7 +240,6 @@ array(1) {
   'result' => string(5) "admin"
 }
 
-
 ```
 
 ## Get unsubscribed list
@@ -293,44 +263,22 @@ return [
 
 ```
 
-## Send push notification
+# User
+## User info
 ```php
-//select user
-$user = $mf->user->getByEmail('someone@example.com', 2);
-//webpush data
-$title = 'Webpush title';
-$text = 'My awesome text';
-$url = 'https://myproject.com/show/42';
-$iconUrl = 'https://static.myproject.com/6hgf5ewwfoj6';
-$typeId = 6;
-//send
-$mf->webpush->sendByUser($user, $title, $text, $url, $iconUrl, $typeId);
-```
-
-## Send push notification to all project users
-```php
-//webpush data
 $projectId = 1;
-$title = 'Webpush title';
-$text = 'My awesome text';
-$url = 'https://myproject.com/show/42';
-$iconUrl = 'https://static.myproject.com/6hgf5ewwfoj6';
-$typeId = 6;
-//send
-$mf->webpush->sendByProject($projectId, $title, $text, $url, $iconUrl, $typeId);
-```
-
-## Unsubscribe/Subscribe user for push notifications
-```php
-//select user
-$user = $mf->user->getByEmail('someone@example.com', 2);
-//unsubscribe
-$mf->webpush->unsubscribeByUser($user);
-//subscribe back
-$mf->webpush->subscribeByUser($user);
-//unsubscribe by push user id
-$pushUserId = 123;
-$mf->webpush->unsubscribeByPushUser($pushUserId);
+// Make GET to /user/project/PROJECT_ID/email/Test@Example.com
+$user = $mf->user->getByEmail('Test@Example.com', $projectId);
+/* Returned array(
+    "id":8424,
+    "project_id":1,
+    "email":"test@example.com",
+    "name":"John",
+    "gender":"m",
+    "country":"UKR",
+    "language":"en",
+    ...
+) */
 ```
 
 ## Create and update user data
@@ -371,7 +319,30 @@ $result = $mf->user->setUserFieldsByUser($user, $fields);
 // $result is a boolean status
 ```
 
-## Payments
+
+## Get user custom fields
+
+```php
+$result = $mf->user->getUserFieldsByEmailAndProjectId('ercling@yandex.ru', 1);
+// or
+$result = $mf->user->getUserFieldsByUser($user);
+/*
+Returns [
+    'user' => [
+        'id' => 892396028,
+        'project_id' => 1,
+         ...
+    ],
+    'custom_fields' => [
+        'sessions_count' => 22,
+         ...
+    ],
+]
+*/
+```
+
+
+# Payments
 ```php
 $startDate = 1509617696;
 $expireDate = 1609617696; //optional (default false)
@@ -422,60 +393,6 @@ if (!$result){
 //    string(44) "Field vip does not match the required format"
 //  }
 //}
-```
-
-## Update user online
-
-By user
-
-```php
-$result = $mf->user->setOnlineByUser($user, new \DateTime()); //Accepted
-```
-
-By email and project ID
-```php
-$result = $mf->user->setOnlineByEmailAndProjectId('ercling@gmail.com', 1, new \DateTime());
-```
-
-## Get user custom fields
-
-By email and project ID
-
-```php
-$result = $mf->user->getUserFieldsByEmailAndProjectId('ercling@yandex.ru', 1);
-/*
-Returns [
-    'user' => [
-        'id' => 892396028,
-        'project_id' => 1,
-         ...
-    ],
-    'custom_fields' => [
-        'sessions_count' => 22,
-         ...
-    ],
-]
-*/
-```
-
-By user
-
-```php
-$user = $mf->user->getById(892396028);
-$result = $mf->user->getUserFieldsByUser($user);
-/*
-Returns [
-    'user' => [
-        'id' => 892396028,
-        'project_id' => 1,
-         ...
-    ],
-    'custom_fields' => [
-        'sessions_count' => 22,
-         ...
-    ],
-]
-*/
 ```
 
 ## Send goals using sdk
@@ -554,8 +471,6 @@ array(3) {
 ```
 
 
-
-
 ## Send goals without sdk
 
 ```php
@@ -577,7 +492,52 @@ Name | Type | Description
 `project_id`|`int`| **Required.** Id of your project. You can find it at https://admin.mailfire.io/account/projects 
 `mail_id`|`int`| Mail id after which the user made a goal
 
-# Application pushes
+
+# Webpush
+
+## Send push notification
+```php
+//select user
+$user = $mf->user->getByEmail('someone@example.com', 2);
+//webpush data
+$title = 'Webpush title';
+$text = 'My awesome text';
+$url = 'https://myproject.com/show/42';
+$iconUrl = 'https://static.myproject.com/6hgf5ewwfoj6';
+$typeId = 6;
+//send
+$mf->webpush->sendByUser($user, $title, $text, $url, $iconUrl, $typeId);
+```
+
+## Send push notification to all project users
+```php
+//webpush data
+$projectId = 1;
+$title = 'Webpush title';
+$text = 'My awesome text';
+$url = 'https://myproject.com/show/42';
+$iconUrl = 'https://static.myproject.com/6hgf5ewwfoj6';
+$typeId = 6;
+//send
+$mf->webpush->sendByProject($projectId, $title, $text, $url, $iconUrl, $typeId);
+```
+
+## Unsubscribe/Subscribe user for push notifications
+```php
+//select user
+$user = $mf->user->getByEmail('someone@example.com', 2);
+//unsubscribe
+$mf->webpush->unsubscribeByUser($user);
+//subscribe back
+$mf->webpush->subscribeByUser($user);
+//unsubscribe by push user id
+$pushUserId = 123;
+$mf->webpush->unsubscribeByPushUser($pushUserId);
+```
+
+
+
+# Application push
 
 $token - application token from Firebase server
 
@@ -593,7 +553,7 @@ $message = jsone_encode($message);
 $result = $mf->appPush->send($project, $uid, $message);
 ```
 
-Create user
+## Create user
 
 ```php
 $result = $mf->appPush->createPushUser($project, $token, $uid, $platform, $userId = null);
@@ -602,14 +562,14 @@ $result = $mf->appPush->createPushUser($project, $token, $uid, $platform, $userI
 
 `platform` - user platform, Android - 1, IOS - 2
 
-Refresh token
+## Refresh token
 
 ```php
 $result = $mf->appPush->refreshToken($project, $token, $uid);
 // $result is a boolean status
 ```
 
-Track show
+## Track show
 
 ```php
 $created - show time in timestamp format
@@ -617,7 +577,7 @@ $result = $mf->appPush->trackShow($project, $uid, $pushId, $created);
 // $result is a boolean status
 ```
 
-Track click
+## Track click
 
 ```php
 $created - click time in timestamp format
@@ -625,14 +585,14 @@ $result = $mf->appPush->trackClick($project, $uid, $pushId, $created);
 // $result is a boolean status
 ```
 
-Update online
+## Update online
 
 ```php
 $result = $mf->appPush->updateOnline($project, $uid);
 // $result is a boolean status
 ```
 
-# Content
+## Content
 
 $entityId - ID of entity which user watched
 
@@ -645,7 +605,9 @@ $result = $mf->content->trackShow($project, $uid, $entityId = null);
 // $result is a boolean status
 ```
 
-# Force confirm update
+# Other
+
+## Force confirm update
 ```php
 $result = $mf->user->forceConfirmByEmailAndProject($email, $projectId);
 // $result == 'Accepted'; if successful
