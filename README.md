@@ -1,31 +1,35 @@
-# Mailfire PHP SDK
+# Mailfire API info and PHP SDK
+Marketing Personalization and Retention Platform<br>
+https://mailfire.ai
 
-[![Latest Stable Version](https://poser.pugx.org/mailfire/php-sdk/v/stable)](https://packagist.org/packages/mailfire/php-sdk)
-[![Total Downloads](https://poser.pugx.org/mailfire/php-sdk/downloads)](https://packagist.org/packages/mailfire/php-sdk)
-
-PHP SDK for https://mailfire.io
-
-## Installing
-via Composer https://getcomposer.org/download
+# Quick start
+You can install PHP SDK
 ```sh
 composer require mailfire/php-sdk
 ```
-or download lib & include files in dir:
+Or make HTTP requests via cURL/any
+
+## Signing of requests via auth
 ```php
-require_once 'autoloader.php';
+# php sdk
+$clientId = 123;
+$clientToken = 'a1s2d3f4g5h6j7k8l';
+$mf = new Mailfire($clientId, $clientToken);
+```
+```php
+# php curl
+curl_setopt($ch, CURLOPT_USERPWD, '123:' . sha1('a1s2d3f4g5h6j7k8l'));
 ```
 
-# Quick start: sending email
+```shell
+# shell
+# sha1 of a1s2d3f4g5h6j7k8l is 957081746b54977d51bef9fc74f4d4fd023bab13
+curl --user 123:a1s2d3f4g5h6j7k8l
+```
+
+
+## Sending email
 ```php
-$clientId = 123;
-$clientHash = 'a1s2d3f4g5h6j7k8l';
-
-// Init main object with access credentials
-$mf = new Mailfire($clientId, $clientHash);
-
-// You can enable Exceptions for sdk fails
-// $mf->errorHandler->setErrorMode(MailfireErrorHandler::MODE_EXCEPTION);
-
 // Required params for letter
 $typeId = 1; // letter id (aka type_id)
 $categoryId = $mf->push->getCategorySystem(); // system or trigger
