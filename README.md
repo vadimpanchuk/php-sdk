@@ -72,8 +72,6 @@ $response = $mf->push->send($typeId, $categoryId, $projectId, $email, $user, $da
 var_dump($response);
 // 
 ```
-https://github.com/mailfire/php-sdk/blob/master/mailfire/MailfirePush.php
-
 
 ## Sending email via cURL
 ```shell
@@ -123,8 +121,6 @@ $result = $mf->email->check('Test@Example.com');
   'trusted' => false,
 ) */
 ```
-https://github.com/mailfire/php-sdk/blob/master/mailfire/MailfireEmail.php
-
 ```shell
 curl -X POST https://api.mailfire.io/v1/email/check \
     -u 123:957081746b54977d51bef9fc74f4d4fd023bab13 \
@@ -143,6 +139,10 @@ $user = $mf->user->getByEmail('test@example.com', $projectId);
     ...
 ) */
 ```
+```shell
+curl -X GET https://api.mailfire.io/v1/user/project/1/email/test@example.com \
+    -u 123:957081746b54977d51bef9fc74f4d4fd023bab13
+```
 
 # Unsubscribe
 ```php
@@ -152,8 +152,6 @@ $unsub = $mf->unsub->addBySettings($user);
 // $user - array with $user[id] == 8424 (our user id)
 // addBySettings reason == 9
 ```
-https://github.com/mailfire/php-sdk/blob/master/mailfire/MailfireUnsub.php
-
 ```shell
 curl -X POST https://api.mailfire.io/v1/unsub/8424/source/9 \
     -u 123:957081746b54977d51bef9fc74f4d4fd023bab13
@@ -165,7 +163,10 @@ $projectId = 1;
 $user = $mf->user->getByEmail('test@example.com', $projectId);
 // Make DELETE to /unsub/USER_ID
 $unsub = $mf->unsub->subscribe($user);
-var_dump($unsub);
+```
+```shell
+curl -X DELETE https://api.mailfire.io/v1/unsub/8424 \
+    -u 123:957081746b54977d51bef9fc74f4d4fd023bab13
 ```
 
 ## Unsubscribe from types
