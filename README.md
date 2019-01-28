@@ -37,6 +37,8 @@ $categoryId = $mf->push->getCategorySystem(); // system or trigger
 $projectId = 1; // in your admin panel
 $email = 'test@example.com'; // for matching user
 
+// User will be autocreated via any first letter
+
 // Variables for letter
 $data = [ // Data for letter
     'some' => 'hi',
@@ -121,26 +123,40 @@ $result = $mf->email->check('Test@Example.com');
   'trusted' => false,
 ) */
 ```
+https://github.com/mailfire/php-sdk/blob/master/mailfire/MailfireEmail.php
+
 ```shell
 curl -X POST https://api.mailfire.io/v1/email/check \
     -u 123:957081746b54977d51bef9fc74f4d4fd023bab13 \
     -d '{"email":"Test@Example.com"}'
 ```
 
-# Online
+# User info by Email and Project
 ```php
-$result = $mf->user->setOnlineByUser($user, new \DateTime());
-// or
-$result = $mf->user->setOnlineByEmailAndProjectId('ercling@gmail.com', 1, new \DateTime());
+$projectId = 1;
+$user = $mf->user->getByEmail('test@example.com', $projectId);
+/* Returned array(
+    "id": 8424, // USED IN MOST API METHODS
+    "project_id":1,
+    "email":"test@example.com",
+    "name":"John",
+    ...
+) */
 ```
 
 # Unsubscribe
 ```php
 $projectId = 1;
 $user = $mf->user->getByEmail('test@example.com', $projectId);
-// Make POST to /unsub/USER_ID/source/9
 $unsub = $mf->unsub->addBySettings($user);
-var_dump($unsub);
+// $user - array with $user[id] == 8424 (our user id)
+// addBySettings reason == 9
+```
+https://github.com/mailfire/php-sdk/blob/master/mailfire/MailfireUnsub.php
+
+```shell
+curl -X POST https://api.mailfire.io/v1/unsub/8424/source/9 \
+    -u 123:957081746b54977d51bef9fc74f4d4fd023bab13
 ```
 
 ## Subscribe back
@@ -341,6 +357,12 @@ Returns [
 */
 ```
 
+## Online
+```php
+$mf->user->setOnlineByUser($user, new \DateTime());
+// or
+$mf->user->setOnlineByEmailAndProjectId('ercling@gmail.com', 1, new \DateTime());
+```
 
 # Payments
 ```php
