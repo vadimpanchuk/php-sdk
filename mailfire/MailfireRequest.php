@@ -2,16 +2,20 @@
 
 /**
  * Class MailfireRequest
- * @property MailfireCurlRequest curlRequest
+ * @property MailfireCurlRequest $curlRequest
+ * @property string $apiBase
+ * @property string $api2Base
  */
 
 class MailfireRequest extends MailfireDi
 {
-    const API_BASE = 'https://api.mailfire.io/v1/';
-    const API2_BASE = 'https://api2.mailfire.io/';
+    const API_BASE = 'https://client_id.api.mailfire.io/v1/';
+    const API2_BASE = 'https://client_id.api2.mailfire.io/';
 
     private $curlRequest = null;
     private $lastCurlResult = null;
+    private $apiBase;
+    private $api2Base;
 
     /**
      * MailfireRequest constructor.
@@ -20,6 +24,8 @@ class MailfireRequest extends MailfireDi
     public function __construct($di)
     {
         parent::__construct($di);
+        $this->setApiBase();
+        $this->setApi2Base();
         $this->setCurlRequest(new MailfireCurlRequest());
     }
 
@@ -90,7 +96,7 @@ class MailfireRequest extends MailfireDi
     private function send($resource, $method, $data = array())
     {
         $method = strtoupper($method);
-        $uri = self::API_BASE . $resource;
+        $uri = $this->apiBase . $resource;
 
         $headers = array();
 
@@ -150,7 +156,7 @@ class MailfireRequest extends MailfireDi
 
     public function sendToApi2($resource, $method, $data = array())
     {
-        $uri = self::API2_BASE . $resource;
+        $uri = $this->api2Base . $resource;
 
         $headers = $this->getApi2Headers();
 
@@ -206,14 +212,14 @@ class MailfireRequest extends MailfireDi
         $this->curlRequest->resetPermanentOptions();
     }
 
-    protected function setApiBase($clientId)
+    protected function setApiBase()
     {
-        $this->apiBase = str_replace('$clientId', $clientId, self::API_BASE);
+        $this->apiBase = str_replace('client_id', $this->clientId, self::API_BASE);
     }
 
-    protected function setApi2Base($clientId)
+    protected function setApi2Base()
     {
-        $this->api2Base = str_replace('$clientId', $clientId, self::API2_BASE);
+        $this->api2Base = str_replace('client_id', $this->clientId, self::API2_BASE);
     }
 
 }
