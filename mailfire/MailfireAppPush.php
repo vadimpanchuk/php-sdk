@@ -27,9 +27,21 @@ class MailfireAppPush extends MailfireDi
             return false;
         }
 
-        return $this->request->sendToApi2('pushapp/user/create', 'POST', [
-            'project' => $project, 'token' => $token, 'uid' => $uid, 'user_id' => $mfEmailUserId, 'platform' => $platform
-        ]);
+        $requestData = [
+            'project' => $project,
+            'token' => $token,
+            'platform' => $platform
+        ];
+
+        if ($uid) {
+            $requestData['uid'] = $uid;
+        }
+
+        if ($mfEmailUserId) {
+            $requestData['user_id'] = $mfEmailUserId;
+        }
+
+        return $this->request->create('pushapp/user/create', $requestData);
     }
 
     /**
@@ -37,6 +49,7 @@ class MailfireAppPush extends MailfireDi
      * @param $token
      * @param $uid
      * @return bool
+     * @throws Exception
      */
     public function refreshToken($project, $token, $uid)
     {
@@ -53,55 +66,51 @@ class MailfireAppPush extends MailfireDi
             return false;
         }
 
-        return $this->request->sendToApi2('pushapp/user/token/refresh', 'PUT', [
-            'project' => $project, 'token' => $token, 'uid' => $uid,
-        ]);
+        $requestData = [
+            'project' => $project,
+            'token' => $token,
+            'uid' => $uid
+        ];
+
+        return $this->request->create('pushapp/user/token/refresh', $requestData);
     }
 
-    public function trackShow($project, $uid, $pushId, $created = null)
+    /**
+     * @param $pushId
+     * @return bool
+     * @throws Exception
+     */
+    public function trackShow($pushId)
     {
-        if (!$project) {
-            $this->errorHandler->handle(new Exception('Project must be set.'));
-            return false;
-        }
-        if (!$uid) {
-            $this->errorHandler->handle(new Exception('Uid must be set.'));
-            return false;
-        }
         if (!$pushId) {
             $this->errorHandler->handle(new Exception('Push id must be set.'));
             return false;
         }
 
-        $created = $created ?: time();
-
-        return $this->request->sendToApi2('pushapp/track/show/' . $pushId, 'POST', [
-            'project' => $project, 'uid' => $uid, 'push_id' => $pushId, 'created' => $created,
-        ]);
+        return $this->request->create('pushapp/track/show', ['push_id' => $pushId]);
     }
 
-    public function trackClick($project, $uid, $pushId, $created = null)
+    /**
+     * @param $pushId
+     * @return bool
+     * @throws Exception
+     */
+    public function trackClick($pushId)
     {
-        if (!$project) {
-            $this->errorHandler->handle(new Exception('Project must be set.'));
-            return false;
-        }
-        if (!$uid) {
-            $this->errorHandler->handle(new Exception('Uid must be set.'));
-            return false;
-        }
         if (!$pushId) {
             $this->errorHandler->handle(new Exception('Push id must be set.'));
             return false;
         }
 
-        $created = $created ?: time();
-
-        return $this->request->sendToApi2('pushapp/track/click/' . $pushId, 'POST', [
-            'project' => $project, 'uid' => $uid, 'push_id' => $pushId, 'created' => $created,
-        ]);
+        return $this->request->create('pushapp/track/click', ['push_id' => $pushId]);
     }
 
+    /**
+     * @param $project
+     * @param $uid
+     * @return bool
+     * @throws Exception
+     */
     public function updateOnline($project, $uid)
     {
         if (!$project) {
@@ -113,11 +122,21 @@ class MailfireAppPush extends MailfireDi
             return false;
         }
 
-        return $this->request->sendToApi2('pushapp/user/online', 'PUT', [
-            'project' => $project, 'uid' => $uid,
-        ]);
+        $requestData = [
+            'project' => $project,
+            'uid' => $uid
+        ];
+
+        return $this->request->create('pushapp/user/online', $requestData);
     }
 
+    /**
+     * @param $project
+     * @param $uid
+     * @param $message
+     * @return bool
+     * @throws Exception
+     */
     public function send($project, $uid, $message)
     {
         if (!$project) {
