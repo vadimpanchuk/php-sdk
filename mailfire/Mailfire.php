@@ -15,6 +15,7 @@
  * @property MailfireAppPush $appPush
  * @property MailfireContent $content
  * @property MailfireRfm $rfm
+ * @property MailfireUserEvent $event
  */
 class Mailfire
 {
@@ -48,6 +49,7 @@ class Mailfire
         $this->appPush = new MailfireAppPush($this);
         $this->content = new MailfireContent($this);
         $this->rfm = new MailfireRfm($this);
+        $this->event = new MailfireUserEvent($this);
     }
-    
+
 }

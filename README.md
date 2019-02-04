@@ -677,6 +677,21 @@ $mf->request->setOption(CURLOPT_TIMEOUT_MS, 2000, true);
 $mf->request->resetPermanentOptions();
 ```
 
+## Create user event
+```php
+$eventName = "some_name";
+        $projectId = 123;
+        $email = "test@example.com";
+        $data = ["var1" => "value1"];
+        $relatedUser = [
+            ["email" => "john1@example.com", "some_var" => "some_value"],
+            ["var2" => "value2"],
+            ["var3" => "value3"],
+        ];
+        $meta = ["var1" => "value1"];
+        $mf->event->sendEvent($eventName, $projectId, $email, $data, $relatedUser, $meta);
+```
+
 # HOW TO RUN THE TESTS
 Make sure you have PHPUnit installed.
 
