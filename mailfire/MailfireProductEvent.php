@@ -3,7 +3,7 @@
 class MailfireProductEvent extends MailfireDi
 {
 
-    const CREATE_EVENT_RESOURCE = 'user-event/create';
+    const CREATE_EVENT_RESOURCE = 'product-event/create';
 
     /**
      * @param array $data
