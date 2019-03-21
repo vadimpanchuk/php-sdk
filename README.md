@@ -678,18 +678,41 @@ $mf->request->resetPermanentOptions();
 ```
 
 ## Create user event
+
+Data format
+
+Name | Type | Description
+-------|------|-------
+`project_id`|`int`| **Required.** User project id
+`event_id`|`int`| **Required.** Event id 
+`uid`|`bigint`| **Required.** uid of event of your product 
+`receiver_id`|`int`| **Required.** Mailfire user id whose event occurred
+`sender_id`|`int`| Mailfire user (id) associated with the reciver_id 
+`sender_product_id`|`int`| Product user (id) associated with the reciver_id 
+`date`|`string`| Event date. Example: '2018-10-24 19:40:22'
+
 ```php
-$eventName = "some_name";
-        $projectId = 123;
-        $email = "test@example.com";
-        $data = ["var1" => "value1"];
-        $relatedUser = [
-            ["email" => "john1@example.com", "some_var" => "some_value"],
-            ["var2" => "value2"],
-            ["var3" => "value3"],
+        $projectId = 1;
+        $event_id = 1;
+        $uid = 1;
+        $receiver_id = 1;
+        $sender_id = 1;
+        $sender_product_id = 1;
+        $date = '2018-10-24 19:40:22';
+
+        $event = [
+            'project_id' => $projectId,
+            'event_id' => $event_id,
+            'uid' => $uid,
+            'receiver_id' => $receiver_id,
+            'sender_id' => $sender_id,
+            'sender_product_id' => $sender_product_id,
+            'date' => $date,
         ];
-        $meta = ["var1" => "value1"];
-        $mf->event->sendEvent($eventName, $projectId, $email, $data, $relatedUser, $meta);
+        
+        $events[] = $event;
+        
+        $mf->event->send($events);
 ```
 
 # HOW TO RUN THE TESTS
