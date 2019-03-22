@@ -628,6 +628,46 @@ $result = $mf->content->trackShow($project, $uid, $entityId = null);
 // $result is a boolean status
 ```
 
+# Events on product
+Data format
+
+Name | Type | Description
+-------|------|-------
+`project_id`|`int`| **Required.** User project id
+`event_id`|`int`| **Required.** Event id 
+`uid`|`bigint`| **Required.** uid of event of your product 
+`receiver_id`|`int`| **Required.** Mailfire user id whose event occurred
+`sender_id`|`int`| Mailfire user (id) associated with the reciver_id 
+`sender_product_id`|`int`| Product user (id) associated with the reciver_id 
+`date`|`string`| Event date. Example: '2018-10-24 19:40:22'
+
+```php
+        $projectId = 1;
+        $event_id = 1;
+        $uid = 1;
+        $receiver_id = 1;
+        $sender_id = 1;
+        $sender_product_id = 1;
+        $date = '2018-10-24 19:40:22';
+
+        $event = [
+            'project_id' => $projectId,
+            'event_id' => $event_id,
+            'uid' => $uid,
+            'receiver_id' => $receiver_id,
+            'sender_id' => $sender_id,
+            'sender_product_id' => $sender_product_id,
+            'date' => $date,
+        ];
+        
+        $events[] = $event;
+        
+        $mf->event->send($events);
+```
+
+
+
+
 # Other
 
 ## Force confirm update
@@ -675,44 +715,6 @@ $mf->request->setOption(CURLOPT_TIMEOUT_MS, 2000, true);
 ## Reset permanent curl options
 ```php
 $mf->request->resetPermanentOptions();
-```
-
-## Create user event
-
-Data format
-
-Name | Type | Description
--------|------|-------
-`project_id`|`int`| **Required.** User project id
-`event_id`|`int`| **Required.** Event id 
-`uid`|`bigint`| **Required.** uid of event of your product 
-`receiver_id`|`int`| **Required.** Mailfire user id whose event occurred
-`sender_id`|`int`| Mailfire user (id) associated with the reciver_id 
-`sender_product_id`|`int`| Product user (id) associated with the reciver_id 
-`date`|`string`| Event date. Example: '2018-10-24 19:40:22'
-
-```php
-        $projectId = 1;
-        $event_id = 1;
-        $uid = 1;
-        $receiver_id = 1;
-        $sender_id = 1;
-        $sender_product_id = 1;
-        $date = '2018-10-24 19:40:22';
-
-        $event = [
-            'project_id' => $projectId,
-            'event_id' => $event_id,
-            'uid' => $uid,
-            'receiver_id' => $receiver_id,
-            'sender_id' => $sender_id,
-            'sender_product_id' => $sender_product_id,
-            'date' => $date,
-        ];
-        
-        $events[] = $event;
-        
-        $mf->event->send($events);
 ```
 
 # HOW TO RUN THE TESTS
