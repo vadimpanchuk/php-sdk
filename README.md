@@ -635,10 +635,10 @@ Name | Type | Description
 -------|------|-------
 `project_id`|`int`| **Required.** User project id
 `event_id`|`int`| **Required.** Event id 
-`uid`|`bigint`| **Required.** uid of event of your product 
+`uid`|`bigint`| **Required.** uid of event from your product 
 `receiver_id`|`int`| **Required.** Mailfire user id whose event occurred
-`sender_id`|`int`| Mailfire user (id) associated with the reciver_id 
-`sender_product_id`|`int`| Product user (id) associated with the reciver_id 
+`sender_id`|`int`| Mailfire user (id) associated with the receiver_id 
+`sender_product_id`|`int`| Product user (id) associated with the receiver_id 
 `date`|`string`| Event date. Example: '2018-10-24 19:40:22'
 
 ```php
