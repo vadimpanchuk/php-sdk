@@ -12,7 +12,7 @@ class MailfireCurlRequest
 
     public function setOption($name, $value, $permanentOption = false)
     {
-        if ($permanentOption){
+        if ($permanentOption) {
             $this->permanentOptions[$name] = $value;
         } else {
             curl_setopt($this->handle, $name, $value);
@@ -45,9 +45,20 @@ class MailfireCurlRequest
         $this->permanentOptions = [];
     }
 
+    public function getErrorNo()
+    {
+        return curl_errno($this->handle);
+    }
+
+    public function getError()
+    {
+        return curl_error($this->handle);
+    }
+
+
     protected function setPermanentOptions()
     {
-        foreach ($this->permanentOptions as $name => $value){
+        foreach ($this->permanentOptions as $name => $value) {
             $this->setOption($name, $value);
         }
     }
