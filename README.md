@@ -643,20 +643,20 @@ Name | Type | Description
 
 ```php
         $projectId = 1;
-        $event_id = 1;
+        $eventId = 1;
         $uid = 1;
-        $receiver_id = 1;
-        $sender_id = 1;
-        $sender_product_id = 1;
+        $receiverId = 1;
+        $senderId = 1;
+        $senderProductId = 1;
         $date = '2018-10-24 19:40:22';
 
         $event = [
             'project_id' => $projectId,
-            'event_id' => $event_id,
+            'event_id' => $eventId,
             'uid' => $uid,
-            'receiver_id' => $receiver_id,
-            'sender_id' => $sender_id,
-            'sender_product_id' => $sender_product_id,
+            'receiver_id' => $receiverId,
+            'sender_id' => $senderId,
+            'sender_product_id' => $senderProductId,
             'date' => $date,
         ];
         
