@@ -16,6 +16,7 @@
  * @property MailfireContent $content
  * @property MailfireRfm $rfm
  * @property MailfireProductEvent $event
+ * @property MailfireClientUser $clientUser
  */
 class Mailfire
 {
@@ -50,6 +51,7 @@ class Mailfire
         $this->content = new MailfireContent($this);
         $this->rfm = new MailfireRfm($this);
         $this->event = new MailfireProductEvent($this);
+        $this->clientUser = new MailfireClientUser($this);
     }
 
 }

@@ -515,6 +515,17 @@ Name | Type | Description
 `project_id`|`int`| **Required.** Id of your project. You can find it at https://admin.mailfire.io/account/projects 
 `mail_id`|`int`| Mail id after which the user made a goal
 
+# Client Users
+
+## client user transfer
+
+```php
+$email = 'john@gmail.com';
+$projectId = 1;
+$clientUserId = 1;
+
+$mf->clientUser->getUserFieldsByUser($email, $projectId, $clientUserId);
+```
 
 # Webpush
 
