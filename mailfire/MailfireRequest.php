@@ -112,7 +112,7 @@ class MailfireRequest extends MailfireDi
                 'headers' => $headers
             );
 
-            $exceptionMsg = 'Request failed: ' . $result . ' Request data: ' . json_encode($debugData);
+            $exceptionMsg = 'Request failed: code ' . $result['code'] . ' ' . $result['result'] . ' Request data: ' . json_encode($debugData);
             if ($this->curlRequest->getErrorNo()) {
                 $exceptionMsg .= ' CURL_ERROR: ' . $this->curlRequest->getError();
             }
@@ -173,7 +173,7 @@ class MailfireRequest extends MailfireDi
                 'headers' => $headers
             );
 
-            $exceptionMsg = 'Request failed: ' . $result . ' Request data: ' . json_encode($debugData);
+            $exceptionMsg = 'Request failed: code ' . $result['code'] . ' ' . $result['result'] . ' Request data: ' . json_encode($debugData);
             if ($this->curlRequest->getErrorNo()) {
                 $exceptionMsg .= ' CURL_ERROR: ' . $this->curlRequest->getError();
             }
