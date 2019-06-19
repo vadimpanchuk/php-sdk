@@ -524,7 +524,7 @@ $email = 'john@gmail.com';
 $projectId = 1;
 $clientUserId = 1;
 
-$mf->clientUser->getUserFieldsByUser($email, $projectId, $clientUserId);
+$mf->clientUser->create($email, $projectId, $clientUserId);
 ```
 
 # Webpush
