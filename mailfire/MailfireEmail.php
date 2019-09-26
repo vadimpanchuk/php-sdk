@@ -3,6 +3,7 @@
 class MailfireEmail extends MailfireDi
 {
     const CHECK_EMAIL_RESOURCE = 'email/check';
+    const VALIDATE_EMAIL_RESOURCE = 'email/check/send';
 
     /**
      * @param string $email
@@ -24,9 +25,11 @@ class MailfireEmail extends MailfireDi
      */
     public function validate($projectId, $email, $typeId)
     {
-        return $this->request->sendToApi2('emails/validate', 'POST', [
-            'project' => $projectId, 'email' => $email, 'type' => $typeId
-        ]);
+        return $this->request->create(self::VALIDATE_EMAIL_RESOURCE, array(
+            'project' => $projectId,
+            'email' => $email,
+            'type' => $typeId
+        ));
     }
 
     /**
