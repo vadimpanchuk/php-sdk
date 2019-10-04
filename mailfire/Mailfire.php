@@ -52,6 +52,7 @@ class Mailfire
         $this->rfm = new MailfireRfm($this);
         $this->event = new MailfireProductEvent($this);
         $this->clientUser = new MailfireClientUser($this);
+        $this->buying = new MailfireBuying($this);
     }
 
 }
