@@ -129,7 +129,7 @@ curl -X POST https://api.mailfire.io/v1/email/check \
 
 ## Validate email with send
 ```php
-$result = $mf->email->check($projectId, 'Test@Example.com', $typeId);
+$result = $mf->email->validate($projectId, 'Test@Example.com');
 /* Returned array(
   'orig' => 'Test@Example.com',
   'valid' => false, // result
@@ -138,12 +138,13 @@ $result = $mf->email->check($projectId, 'Test@Example.com', $typeId);
   'vendor' => 'Unknown', // vendor name like Gmail
   'domain' => 'example.com',
   'trusted' => false,
+  'is_send': true
 ) */
 ```
 ```shell
 curl -X POST https://api.mailfire.io/v1/email/check/send \
     -u 123:957081746b54977d51bef9fc74f4d4fd023bab13 \
-    -d '{"email":"Test@Example.com","project": 9,"type": 129}'
+    -d '{"email":"Test@Example.com","project": 9}'
 ```
 
 # User info by Email and Project
