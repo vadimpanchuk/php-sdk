@@ -14,7 +14,6 @@
  * @property MailfireGoal $goal
  * @property MailfireAppPush $appPush
  * @property MailfireContent $content
- * @property MailfireRfm $rfm
  * @property MailfireProductEvent $event
  * @property MailfireClientUser $clientUser
  */
@@ -49,7 +48,6 @@ class Mailfire
         $this->goal = new MailfireGoal($this);
         $this->appPush = new MailfireAppPush($this);
         $this->content = new MailfireContent($this);
-        $this->rfm = new MailfireRfm($this);
         $this->event = new MailfireProductEvent($this);
         $this->clientUser = new MailfireClientUser($this);
         $this->buying = new MailfireBuying($this);
