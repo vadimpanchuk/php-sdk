@@ -4,18 +4,18 @@
  * Class MailfireRequest
  * @property MailfireCurlRequest $curlRequest
  * @property string $apiBase
- * @property string $api2Base
+ * @property string $api3Base
  */
 
 class MailfireRequest extends MailfireDi
 {
     const API_BASE = 'https://api.mailfire.io/v1/';
-    const API2_BASE = 'https://api2.mailfire.io/';
+    const API3_BASE = 'https://api.mailfire.io/v3/';
 
     private $curlRequest = null;
     private $lastCurlResult = null;
     private $apiBase;
-    private $api2Base;
+    private $api3Base;
 
     /**
      * MailfireRequest constructor.
@@ -25,7 +25,7 @@ class MailfireRequest extends MailfireDi
     {
         parent::__construct($di);
         $this->setApiBase();
-        $this->setApi2Base();
+        $this->setApi3Base();
         $this->setCurlRequest(new MailfireCurlRequest());
     }
 
@@ -157,9 +157,9 @@ class MailfireRequest extends MailfireDi
         );
     }
 
-    public function sendToApi2($resource, $method, $data = array())
+    public function sendToApi3($resource, $method, $data = array())
     {
-        $uri = $this->api2Base . $resource;
+        $uri = $this->api3Base . $resource;
 
         $headers = $this->getApi2Headers();
 
@@ -223,9 +223,9 @@ class MailfireRequest extends MailfireDi
         $this->apiBase = str_replace('client_id', $this->clientId, self::API_BASE);
     }
 
-    protected function setApi2Base()
+    protected function setApi3Base()
     {
-        $this->api2Base = str_replace('client_id', $this->clientId, self::API2_BASE);
+        $this->api3Base = str_replace('client_id', $this->clientId, self::API3_BASE);
     }
 
 }

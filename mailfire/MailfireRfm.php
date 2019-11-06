@@ -8,6 +8,6 @@ class MailfireRfm extends MailfireDi
      */
     public function set($data)
     {
-        return $this->request->sendToApi2('rfm/set', 'POST', $data);
+        return $this->request->sendToApi3('rfm/set', 'POST', $data);
     }
 }

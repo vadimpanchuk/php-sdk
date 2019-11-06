@@ -23,7 +23,7 @@ class MailfireContent extends MailfireDi
             return false;
         }
 
-        return $this->request->sendToApi2('pushapp/content/show', 'POST', [
+        return $this->request->sendToApi3('pushapp/content/show', 'POST', [
             'project' => $project, 'uid' => $uid, 'entity' => $entityId
         ]);
     }

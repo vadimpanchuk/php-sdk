@@ -29,7 +29,7 @@ class MailfireGoal extends MailfireDi
             return array_merge($resultArray, $this->invalidGoals);
         }
 
-        $sendStatus = $this->request->sendToApi2(self::GOAL_RESOURCE,"POST", $data);
+        $sendStatus = $this->request->sendToApi3(self::GOAL_RESOURCE,"POST", $data);
 
         if ($sendStatus) {
             $resultArray['goals_added'] = count($this->validGoals);

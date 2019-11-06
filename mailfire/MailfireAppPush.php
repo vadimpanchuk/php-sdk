@@ -148,7 +148,7 @@ class MailfireAppPush extends MailfireDi
             return false;
         }
 
-        return $this->request->sendToApi2('pushapp/user/send', 'POST', [
+        return $this->request->sendToApi3('pushapp/user/send', 'POST', [
             'project' => $project, 'uid' => $uid, 'message' => $message
         ]);
     }

@@ -130,29 +130,34 @@ class MailfireUser extends MailfireDi
     public function setOnlineByEmailAndProjectId($email, $projectId, \DateTime $dateTime)
     {
         $data = [
-            'timestamp' => $dateTime->format('U')
+            'timestamp' => $dateTime->format('U'),
+            'project_id' => $projectId,
+            'encoded_email' => base64_encode($email)
         ];
         $resource = strtr('users/project/:projectId/email/:emailHash/online', [
             ':emailHash' => base64_encode($email),
             ':projectId' => $projectId,
         ]);
 
-        return $this->request->sendToApi2($resource, 'PUT', $data);
+        return $this->request->sendToApi3($resource, 'PUT', $data);
     }
 
     public function setOnlineByUser(array $user, \DateTime $dateTime)
     {
         $user = $this->resolve($user);
+
         if (!$user || !$user['id']) {
             return false;
         }
 
         $data = [
-            'timestamp' => $dateTime->format('U')
+            'timestamp' => $dateTime->format('U'),
+            'user_id' => $user['id']
         ];
+
         $resource = 'users/' . $user['id'] . '/online';
 
-        return $this->request->sendToApi2($resource, 'PUT', $data);
+        return $this->request->sendToApi3($resource, 'PUT', $data);
     }
 
     /**
@@ -239,13 +244,16 @@ class MailfireUser extends MailfireDi
     public function forceConfirmByEmailAndProject($email, $projectId)
     {
         $data = [
-            'last_reaction' => strtotime('now')
+            'last_reaction' => strtotime('now'),
+            'project_id' => $projectId,
+            'encoded_email' => base64_encode($email)
         ];
+
         $resource = strtr('users/project/:projectId/email/:emailHash/confirm', [
             ':emailHash' => base64_encode($email),
             ':projectId' => $projectId,
         ]);
 
-        return $this->request->sendToApi2($resource, 'PUT', $data);
+        return $this->request->sendToApi3($resource, 'PUT', $data);
     }
 }
