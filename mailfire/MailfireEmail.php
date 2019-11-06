@@ -20,15 +20,13 @@ class MailfireEmail extends MailfireDi
     /**
      * @param int $projectId
      * @param string $email
-     * @param int $typeId
      * @return bool
      */
-    public function validate($projectId, $email, $typeId)
+    public function validate($projectId, $email)
     {
         return $this->request->create(self::VALIDATE_EMAIL_RESOURCE, array(
             'project' => $projectId,
-            'email' => $email,
-            'type' => $typeId
+            'email' => $email
         ));
     }
 
