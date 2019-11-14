@@ -86,6 +86,14 @@ class MailfireRequest extends MailfireDi
     }
 
     /**
+     * Closed session
+     */
+    public function close()
+    {
+        $this->curlRequest->close();
+    }
+
+    /**
      * @param string $resource
      * @param string $method
      * @param array $data
