@@ -1,8 +1,9 @@
-# Mailfire API info and PHP SDK
-Marketing Personalization and Retention Platform<br>
-https://mailfire.ai
+# Email Marketing platform for your key product metrics<br>
+https://mailfire.io
 
-# Quick start
+# API info and PHP SDK
+
+## Start
 You can install PHP SDK
 ```sh
 composer require mailfire/php-sdk
