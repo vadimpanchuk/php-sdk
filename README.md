@@ -189,43 +189,6 @@ $unsub = $mf->unsub->subscribe($user);
 curl -X DELETE https://api.mailfire.io/v1/unsub/8424 \
     -u 123:957081746b54977d51bef9fc74f4d4fd023bab13
 ```
-
-## Unsubscribe from types
-```php
-$projectId = 1;
-$user = $mf->user->getByEmail('test@example.com', $projectId);
-$list = $mf->unsubTypes->getList($user);
-var_dump($list);
-//array(2) {
-//  [0] =>
-//  array(3) {
-//    'type_id' =>
-//   int(3)
-//    'unsubscribed' =>
-//    bool(false)
-//    'name' =>
-//    string(11) "Popular now"
-//  }
-//  [1] =>
-//  array(3) {
-//    'type_id' =>
-//    int(4)
-//    'unsubscribed' =>
-//    bool(false)
-//    'name' =>
-//    string(8) "Breaking"
-//  }
-//}
-
-$result = $mf->unsubTypes->setDisabledTypes(12, [4]); //subscribes
-//for all active type_id`s except 4
-
-$mf->unsubTypes->addTypes(12, [4]); //unsubscribe user from type 4
-$mf->unsubTypes->removeTypes(12, [4]); //subscribe user for type 4
-$mf->unsubTypes->removeAll(12); //subscribe user for all types
-
-```
-
 ## Unsubscribe by admin
 
 ```php
@@ -300,6 +263,57 @@ return [
 ];
 
 ```
+
+
+# Unsubscribe from types
+### Get current unsubs
+```php
+$projectId = 1;
+$user = $mf->user->getByEmail('test@example.com', $projectId);
+$list = $mf->unsubTypes->getList($user);
+//returns array {
+//  [0] =>
+//  array(3) {
+//    'type_id' =>
+//   int(3)
+//    'unsubscribed' =>
+//    bool(false)
+//    'name' =>
+//    string(11) "Popular now"
+//  },
+//  ...
+//}
+```
+
+### Unsubscribe user from types 4 and 5
+```php
+$mf->unsubTypes->addTypes($user, [4, 5]);
+```
+```shell
+curl -X POST https://api.mailfire.io/v1/unsubtypes/nodiff/[MF_USER_ID] \
+    -u 123:957081746b54977d51bef9fc74f4d4fd023bab13 \
+    -d '{"type_ids": [4, 5]}'
+```
+
+### Subscribe user back to types 4 and 5
+```php
+$mf->unsubTypes->removeTypes($user, [4, 5]);
+```
+```shell
+curl -X DELETE https://api.mailfire.io/v1/unsubtypes/nodiff/[MF_USER_ID] \
+    -u 123:957081746b54977d51bef9fc74f4d4fd023bab13 \
+    -d '{"type_ids": [4, 5]}'
+```
+
+### Subscribe user back to all types
+```php
+$mf->unsubTypes->removeAll($user); 
+```
+```shell
+curl -X DELETE https://api.mailfire.io/v1/unsubtypes/all/[MF_USER_ID] \
+    -u 123:957081746b54977d51bef9fc74f4d4fd023bab13
+```
+
 
 # User
 ## User info
