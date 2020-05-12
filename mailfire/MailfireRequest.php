@@ -120,11 +120,8 @@ class MailfireRequest extends MailfireDi
                 'headers' => $headers
             );
 
-            $exceptionMsg = 'Request failed: code ' . $result['code'] . ' ' . $result['result'] . ' Request data: ' . json_encode($debugData);
-            if ($this->curlRequest->getErrorNo()) {
-                $exceptionMsg .= ' CURL_ERROR: ' . $this->curlRequest->getError();
-            }
-            $this->errorHandler->handle(new Exception($exceptionMsg));
+            $exceptionMsg = $this->buildExceptionMessage($result, $debugData);
+            $this->errorHandler->handle(new MailfireRequestException($exceptionMsg, $result['code']));
             return false;
         }
         $result = json_decode($result['result'], true);
@@ -135,6 +132,21 @@ class MailfireRequest extends MailfireDi
             return $result['data'];
         }
         return true;
+    }
+
+    /**
+     * @param $result
+     * @param $debugData
+     * @return string
+     */
+    private function buildExceptionMessage($result, $debugData)
+    {
+        $exceptionMsg = 'Request failed: code ' . $result['code'] . ' ' . $result['result'] . ' Request data: ' . json_encode($debugData);
+        if ($this->curlRequest->getErrorNo()) {
+            $exceptionMsg .= ' CURL_ERROR: ' . $this->curlRequest->getError();
+        }
+
+        return $exceptionMsg;
     }
 
     /**
@@ -181,10 +193,7 @@ class MailfireRequest extends MailfireDi
                 'headers' => $headers
             );
 
-            $exceptionMsg = 'Request failed: code ' . $result['code'] . ' ' . $result['result'] . ' Request data: ' . json_encode($debugData);
-            if ($this->curlRequest->getErrorNo()) {
-                $exceptionMsg .= ' CURL_ERROR: ' . $this->curlRequest->getError();
-            }
+            $exceptionMsg = $this->buildExceptionMessage($result, $debugData);
             $this->errorHandler->handle(new Exception($exceptionMsg));
             return false;
         }
